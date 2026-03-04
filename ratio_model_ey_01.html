@@ -833,12 +833,11 @@ body {
 }
 
 .rubric-title {
-  font-size: 10px;
-  font-weight: 700;
-  font-family: 'Courier New', 'Courier', monospace;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--mist);
+  letter-spacing: 0.04em;
+  color: var(--slate);
 }
 
 .rubric-items {
@@ -1600,12 +1599,10 @@ function renderSkillBank() {
   container.innerHTML = skills.map(skill => {
     const isSelected = skill.id === selectedSkillId;
     const rankStr = String(skill.rank).padStart(2, '0');
-    const dotClass = skill.must_have ? 'must-have' : 'preferred';
 
     return `
       <div class="skill-card ${isSelected ? 'selected' : ''}" onclick="selectSkill(${skill.id})">
         <span class="skill-card-rank">${rankStr}</span>
-        <span class="skill-card-dot ${dotClass}"></span>
         <div class="skill-card-content">
           <div class="skill-card-name">${skill.skillName}</div>
           <div class="skill-card-level">
