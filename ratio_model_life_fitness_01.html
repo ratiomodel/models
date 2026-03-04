@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ratio Hiring Model</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RATIO HIRING MODEL TEMPLATE
+
+   TO USE: Replace the JSON in the <script> tag at the bottom
+   of this file with your new model data, then update the
+   ROLE_TITLE and COMPANY_NAME variables.
+   Open in browser → Cmd+P → Save as PDF
+   ============================================================ */
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --primary-light: #818cf8;
+  --accent: #ff8c00;
+  --text-headline: #0f172a;
+  --ink: #1f2937;
+  --slate: #6b7280;
+  --mist: #9ca3af;
+  --ghost: #f9fafb;
+  --whisper: #e5e7eb;
+  --white: #ffffff;
+  --source-green: #16a34a;
+  --flag-red: #b91c1c;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
+  background: var(--white);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0 16px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.logo-img { height: 30px; }
+
+.header-right { text-align: right; }
+.header-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--primary);
+}
+.header-sublabel { font-size: 11px; color: var(--mist); margin-top: 2px; }
+
+/* ── ROLE BANNER ── */
+.role-banner { margin-top: 20px; margin-bottom: 4px; }
+.role-title {
+  font-size: 26px; font-weight: 800; color: var(--text-headline);
+  letter-spacing: -0.02em; line-height: 1.15;
+}
+.role-subtitle {
+  font-size: 13px; color: var(--slate); margin-top: 6px;
+  line-height: 1.55; max-width: 820px;
+}
+
+/* ── SECTION LABELS ── */
+.section-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--primary);
+  margin-bottom: 10px; margin-top: 24px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::before {
+  content: ''; width: 3px; height: 14px;
+  background: var(--primary); border-radius: 2px; display: inline-block;
+}
+
+/* ── SKILLS TABLE ── */
+.skills-table { width: 100%; border-collapse: collapse; margin-bottom: 4px; }
+
+.skills-table thead th {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--mist); text-align: left;
+  padding: 8px 10px; border-bottom: 1px solid var(--whisper);
+}
+.skills-table thead th:first-child { padding-left: 12px; }
+
+.skills-table tbody tr { border-bottom: 1px solid #f1f5f9; }
+.skills-table tbody tr:last-child { border-bottom: none; }
+.skills-table tbody td { padding: 8px 12px; vertical-align: top; font-size: 13px; }
+.skills-table tbody td:first-child { padding-left: 12px; }
+
+.skill-rank { font-size: 11px; font-weight: 600; color: var(--mist); width: 28px; text-align: center; }
+.skill-name-cell { width: 280px; max-width: 280px; }
+.skill-name { font-weight: 600; color: var(--text-headline); font-size: 13px; }
+.skill-category { font-size: 10px; color: var(--mist); margin-top: 1px; }
+.skill-desc-inline {
+  font-size: 11px; color: var(--mist); line-height: 1.35;
+  margin-top: 3px;
+}
+
+.badge {
+  display: inline-block; font-size: 9.5px; font-weight: 600;
+  padding: 2px 8px; border-radius: 10px; text-transform: uppercase;
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+.badge-must-have { background: rgba(79, 70, 229, 0.1); color: var(--primary); }
+.badge-preferred { background: rgba(107, 114, 128, 0.1); color: var(--slate); }
+
+/* Proficiency — 3 dots */
+.proficiency-wrap { text-align: left; }
+.proficiency-dots { display: flex; gap: 4px; justify-content: flex-start; align-items: center; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--whisper); }
+.dot.filled { background: var(--primary); }
+.proficiency-text { font-size: 9px; color: var(--mist); margin-top: 2px; }
+
+/* ── SKILL INSIGHTS ── */
+.skill-insights { }
+
+.insight-row {
+  font-size: 12px; color: var(--ink); line-height: 1.4;
+  padding: 2px 0; display: flex; align-items: flex-start; gap: 5px;
+}
+.insight-label {
+  font-weight: 600; white-space: nowrap; min-width: 76px;
+  display: inline-block;
+}
+
+.insight-icon {
+  font-size: 6px; margin-top: 5px; flex-shrink: 0;
+}
+.source-icon { color: var(--source-green); }
+.flag-icon { color: var(--flag-red); font-size: 9px; margin-top: 3px; }
+
+/* ── QUESTION CARDS ── */
+.qc-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e8e8ec;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.02);
+}
+
+.qc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f3;
+  background: #fafafa;
+}
+
+.qc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qc-counter {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mist);
+}
+
+.qc-skill-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1a1a2e;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.qc-question {
+  padding: 18px 22px 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #1a1a2e;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.qc-divider {
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qc-divider-label {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Courier New', 'Courier', monospace;
+  color: #9ca3af;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.qc-divider-line {
+  flex: 1;
+  height: 1px;
+  background: #f0f0f3;
+}
+
+.qc-rubric {
+  padding: 10px 14px 16px;
+}
+
+.qc-rubric-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 10px;
+  border-radius: 9px;
+}
+
+.qc-checkbox {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  border-radius: 5px;
+  border: 1.5px solid #d0d0d8;
+  background: #fff;
+  margin-top: 1px;
+}
+
+.qc-rubric-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.qc-rubric-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: #374151;
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+
+.qc-rubric-detail {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+/* ── QUESTION TYPE BADGE ── */
+.qc-type-badge {
+  display: inline-block; font-size: 9px; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px; text-transform: uppercase;
+  letter-spacing: 0.06em; white-space: nowrap;
+  background: rgba(107, 114, 128, 0.08); color: var(--slate);
+  margin-left: auto;
+}
+
+/* ── SACRIFICE PROBE ── */
+.qc-probe {
+  padding: 0 22px 14px;
+}
+.qc-probe-inner {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px 14px;
+  background: var(--ghost); border-radius: 8px;
+  border-left: 2px solid var(--primary-light);
+}
+.qc-probe-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--primary); white-space: nowrap;
+  margin-top: 1px;
+}
+.qc-probe-text {
+  font-size: 12.5px; color: var(--ink); font-style: italic;
+  line-height: 1.45;
+}
+
+/* ── NEGATIVE ANCHOR INDICATOR ── */
+.qc-anchor-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 9px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--accent);
+  padding: 2px 7px; border-radius: 4px;
+  background: rgba(255, 140, 0, 0.08);
+  margin-left: 8px;
+}
+.qc-anchor-tag::before {
+  content: '◆'; font-size: 6px;
+}
+
+/* ── CTA ── */
+.cta-section {
+  margin-top: 28px;
+  padding: 22px 24px;
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  border-radius: 14px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.cta-text { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+.cta-subtext { font-size: 12px; color: rgba(255,255,255,0.75); margin-bottom: 14px; }
+.cta-button {
+  display: inline-block;
+  padding: 10px 28px;
+  background: var(--white);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.cta-button:hover {
+  background: #f0efff;
+}
+
+.legal-footer {
+  text-align: center;
+  padding: 12px 0 20px;
+  font-size: 10px;
+  color: var(--mist);
+}
+.legal-footer a {
+  color: var(--mist);
+  text-decoration: none;
+}
+
+/* ── RESPONSIVE BREAKPOINTS ── */
+@media (max-width: 900px) {
+  .page { padding: 0 24px; }
+  .skill-name-cell { width: 200px; max-width: 200px; }
+  .qc-question { padding: 14px 18px 12px; }
+  .qc-probe { padding: 0 18px 12px; }
+  .qc-divider { padding: 0 18px; }
+  .qc-rubric { padding: 8px 10px 14px; }
+}
+
+@media (max-width: 640px) {
+  .page { padding: 0 16px; }
+  .skills-table { font-size: 11px; }
+  .skills-table tbody td { padding: 6px 6px; font-size: 11px; }
+  .skill-name-cell { width: 160px; max-width: 160px; }
+  .skill-rank { width: 22px; }
+  .insight-label { min-width: 60px; font-size: 10px; }
+  .insight-row { font-size: 10px; }
+  .role-title { font-size: 22px; }
+  .qc-question { font-size: 13px; padding: 12px 14px 10px; }
+  .qc-header { padding: 10px 14px; }
+  .qc-probe { padding: 0 14px 10px; }
+  .qc-divider { padding: 0 14px; }
+  .qc-rubric { padding: 6px 8px 12px; }
+}
+
+/* ── PRINT STYLES ── */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.5in 0.55in;
+  }
+
+  body {
+    font-size: 12.5px;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .page {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .skill-name-cell {
+    width: 200px;
+    max-width: 200px;
+  }
+
+  .skills-table tbody td {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .skill-name { font-size: 12px; }
+  .insight-row { font-size: 11px; }
+  .skill-desc-inline { font-size: 10px; }
+  .qc-rubric-label { font-size: 12px; }
+  .qc-rubric-detail { font-size: 11.5px; }
+
+  .header {
+    padding-top: 0;
+  }
+
+  .skills-table tbody tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .qc-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cta-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .cta-button {
+    color: var(--primary) !important;
+  }
+
+  .qc-probe-inner {
+    border-left-color: var(--primary-light) !important;
+    background: var(--ghost) !important;
+  }
+
+  .qc-anchor-tag {
+    background: rgba(255, 140, 0, 0.08) !important;
+  }
+
+  a { text-decoration: none; }
+}
+
+/* ============================================================
+   MASTER-DETAIL LAYOUT (Interactive Web View)
+   ============================================================ */
+
+/* ── LAYOUT CONTAINER ── */
+.layout-container {
+  display: flex;
+  gap: 32px;
+  margin-top: 24px;
+  min-height: 600px;
+}
+
+/* ── SKILL BANK (Left Column) ── */
+.skill-bank {
+  width: 320px;
+  min-width: 320px;
+  flex-shrink: 0;
+}
+
+.skill-bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.skill-bank-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-headline);
+  letter-spacing: -0.01em;
+}
+
+.skill-bank-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* ── FILTER TABS ── */
+.skill-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.skill-tab {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: var(--ghost);
+  color: var(--slate);
+}
+
+.skill-tab:hover {
+  background: var(--whisper);
+}
+
+.skill-tab.active {
+  background: var(--primary);
+  color: var(--white);
+}
+
+/* ── SKILL CARDS ── */
+.skill-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: calc(100vh - 340px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.skill-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1px solid var(--whisper);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.skill-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transform: translateY(-1px);
+}
+
+.skill-card.selected {
+  border-left: 3px solid var(--primary);
+  background: rgba(79, 70, 229, 0.04);
+  border-color: rgba(79, 70, 229, 0.2);
+}
+
+.skill-card-rank {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mist);
+  min-width: 20px;
+}
+
+.skill-card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.skill-card-dot.must-have {
+  background: var(--primary);
+}
+
+.skill-card-dot.preferred {
+  background: var(--mist);
+}
+
+.skill-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.skill-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-headline);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skill-card-level {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skill-card-dots {
+  display: flex;
+  gap: 3px;
+}
+
+.skill-card-dots .dot {
+  width: 6px;
+  height: 6px;
+}
+
+.skill-card-level-text {
+  font-size: 10px;
+  color: var(--mist);
+}
+
+/* ── SKILL DETAIL (Right Column) ── */
+.skill-detail {
+  flex: 1;
+  min-width: 0;
+}
+
+.detail-header {
+  margin-bottom: 24px;
+}
+
+.detail-skill-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.detail-skill-name {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-headline);
+  letter-spacing: -0.02em;
+}
+
+.detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Clickable badge for tooltips */
+.badge-clickable {
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.badge-clickable:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.detail-category-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--ghost);
+  color: var(--slate);
+}
+
+/* ── DETAIL SECTIONS ── */
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mist);
+  margin-bottom: 10px;
+}
+
+.detail-description {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+/* ── RECRUITER INSIGHTS ── */
+.detail-insights {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-insight-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.detail-insight-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.detail-insight-icon.source {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--source-green);
+}
+
+.detail-insight-icon.flag {
+  background: rgba(185, 28, 28, 0.1);
+  color: var(--flag-red);
+}
+
+.detail-insight-label {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.detail-insight-text {
+  color: var(--slate);
+}
+
+/* ── QUESTION HIGHLIGHT ── */
+.question-highlight {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.06) 0%, rgba(79, 70, 229, 0.12) 100%);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.question-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.question-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+}
+
+.question-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--text-headline);
+  letter-spacing: -0.01em;
+}
+
+/* ── FOLLOW-UP PROBE (Progressive Disclosure) ── */
+.probe-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--white);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.probe-toggle:hover {
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.probe-toggle-arrow {
+  transition: transform 0.2s ease;
+}
+
+.probe-toggle.expanded .probe-toggle-arrow {
+  transform: rotate(90deg);
+}
+
+.probe-content {
+  margin-top: 14px;
+  padding: 14px 18px;
+  background: var(--white);
+  border-radius: 10px;
+  border-left: 3px solid var(--primary-light);
+  display: none;
+}
+
+.probe-content.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.probe-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.probe-text {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* ── RUBRIC (Interactive) ── */
+.rubric-section {
+  background: var(--white);
+  border: 1px solid var(--whisper);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+
+.rubric-header {
+  padding: 14px 20px;
+  background: var(--ghost);
+  border-bottom: 1px solid var(--whisper);
+}
+
+.rubric-title {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--slate);
+}
+
+.rubric-items {
+  padding: 12px 16px;
+}
+
+/* Note: .rubric-item styles moved to tooltip section above */
+
+.rubric-item-content {
+  flex: 1;
+}
+
+.rubric-item-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.rubric-item-detail {
+  font-size: 13px;
+  color: var(--slate);
+  line-height: 1.5;
+}
+
+/* ── HEADER SUBTITLE ── */
+.header-subtitle {
+  font-size: 11px;
+  color: var(--mist);
+  margin-top: 4px;
+}
+
+/* ── STICKY CTA BUTTON ── */
+.sticky-cta {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.sticky-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+}
+
+/* ── TOOLTIP SYSTEM (Ratio-style) ── */
+.tooltip-trigger {
+  position: relative;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 9999;
+  width: 280px;
+  max-width: calc(100vw - 32px);
+  padding: 16px 18px;
+  background: rgba(79, 70, 229, 0.97);
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2), 0 4px 12px rgba(79, 70, 229, 0.3);
+  color: var(--white);
+  animation: tooltipFadeIn 0.15s ease-out;
+  pointer-events: auto;
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+}
+
+.tooltip-arrow.bottom {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-color: rgba(79, 70, 229, 0.97);
+  border-top: 0;
+}
+
+.tooltip-arrow.top {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top-color: rgba(79, 70, 229, 0.97);
+  border-bottom: 0;
+}
+
+.tooltip-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.tooltip-body {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tooltip-dismiss {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tooltip-dismiss:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tooltip trigger - styled pill/badge */
+.tooltip-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.08);
+  border: 1px solid rgba(79, 70, 229, 0.15);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+.tooltip-pill:hover {
+  background: rgba(79, 70, 229, 0.15);
+  border-color: rgba(79, 70, 229, 0.3);
+}
+
+.tooltip-pill-icon {
+  font-size: 9px;
+  margin-right: 3px;
+  opacity: 0.8;
+}
+
+/* RATE letter badge for rubric */
+.rate-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.1);
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+/* Rubric row - fully interactive for tooltip */
+.rubric-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-left: 3px solid transparent;
+}
+
+.rubric-item:hover {
+  background: rgba(79, 70, 229, 0.05);
+  border-left-color: rgba(79, 70, 229, 0.4);
+}
+
+.rubric-item:hover .rate-badge {
+  background: rgba(79, 70, 229, 0.2);
+  transform: scale(1.05);
+}
+
+.rubric-item:active {
+  background: rgba(79, 70, 229, 0.08);
+  border-left-color: var(--primary);
+}
+
+.rubric-item:active .rate-badge {
+  background: var(--primary);
+  color: var(--white);
+}
+
+/* Rubric header with tooltip trigger */
+.rubric-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ── RESPONSIVE FOR MASTER-DETAIL ── */
+@media (max-width: 900px) {
+  .layout-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .skill-bank {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .skill-cards {
+    max-height: 300px;
+  }
+
+  .sticky-cta {
+    bottom: 16px;
+    right: 16px;
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .skill-tabs {
+    gap: 6px;
+  }
+
+  .skill-tab {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .skill-card {
+    padding: 12px 14px;
+  }
+
+  .detail-skill-name {
+    font-size: 20px;
+  }
+
+  .detail-skill-name-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .question-highlight {
+    padding: 18px;
+  }
+
+  .tooltip {
+    width: calc(100vw - 32px);
+    left: 16px !important;
+    right: 16px;
+  }
+
+  .question-text {
+    font-size: 15px;
+  }
+}
+</style>
+</head>
+<body>
+<div class="page" id="app"></div>
+
+<script>
+// ============================================================
+//
+// ► TO GENERATE A NEW MODEL:
+//   1. Replace MODEL_DATA with your new JSON array
+//   2. Update ROLE_TITLE with the job title
+//   3. Update COMPANY_NAME with the target company
+//   4. Open in browser → Cmd+P → Save as PDF
+//
+// ► NEW FIELDS (optional — template handles missing gracefully):
+//   - sacrificeProbe: string — follow-up question for surface answers
+//   - hasNegativeAnchor: boolean — flags negative anchor constraint on Q1
+//   - questionType: "ASK" | "Situational" | "Behavioral"
+//
+// ============================================================
+
+const MODEL_DATA = [
+  {
+    "id": 1,
+    "skillName": "Electro-mechanical Troubleshooting",
+    "category": "Hard Skill",
+    "rank": 1,
+    "must_have": true,
+    "proficiency": 3,
+    "description": "Diagnose and repair complex systems involving AC/DC power, digital circuits, and mechanical components. Source for: field service titles, heavy equipment repair, medical device maintenance. Red flag: experience limited to simple assembly or basic manual labor.",
+    "questionType": "ASK",
+    "screeningQuestion": "You're looking at a treadmill that randomly resets during peak hours. The gym owner's hovering, and your diagnostic tablet's dead. Where do you start when figuring out if the power unit or the screen is failing?",
+    "tensionProbe": "What's the risk of just swapping both parts?",
+    "hasNegativeAnchor": true,
+    "modelAnswer": [
+      "Name specifics: electrical testing tools, voltage measurement checks, status lights, grounding inspections — not just 'I'd check the parts' — must describe a specific manual electrical isolation process without using software diagnostics",
+      "Describe the method: isolates circuits by disconnecting loads, verifies input power sources, swaps known good cabling",
+      "Weigh the trade-off: thorough diagnostic investigation vs quickly swapping parts to finish",
+      "Quantify the impact: manual identification of the failure, machine performance verified under full load"
+    ]
+  },
+  {
+    "id": 2,
+    "skillName": "Territory Management",
+    "category": "Domain Knowledge",
+    "rank": 2,
+    "must_have": true,
+    "proficiency": 2,
+    "description": "Navigate a multi-site region to meet service metrics like first-time fix rates and tasks per day. Source for: multi-site route experience, field-based titles, residential/commercial service history. Red flag: profile shows only shop-based or single-location roles.",
+    "questionType": "Situational",
+    "screeningQuestion": "Imagine you've got five calls across the city, but two are high-priority and on opposite ends of your territory. Walk me through how you plan that route so you aren't driving all day.",
+    "tensionProbe": "What happens if you just go in order?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Identify the problem: navigation tools, traffic flow patterns, inventory availability, facility hours, priority labels — not just 'I'd plan my route' — must name specific criteria like geographical clustering or part availability checks used to prioritize",
+      "Outline the process: triages by urgency level, groups calls by geography, confirms parts are in the van, coordinates with dispatch",
+      "Name the trade-off: total travel distance vs meeting high-priority customer needs",
+      "State the outcome: all sites visited, minimized drive time, daily task volume targets met"
+    ]
+  },
+  {
+    "id": 3,
+    "skillName": "Network Troubleshooting",
+    "category": "Hard Skill",
+    "rank": 3,
+    "must_have": true,
+    "proficiency": 2,
+    "description": "Resolve connectivity issues involving WiFi, A/V consoles, and digital networking in consumer and commercial environments. Source for: low-voltage experience, IoT support, A/V installation. Red flag: strictly mechanical backgrounds with no mention of electronics or connectivity.",
+    "questionType": "ASK",
+    "screeningQuestion": "You've finished a mechanical repair on a rower, but the screen won't connect to the gym's WiFi even though other units are online. How do you troubleshoot the connection from the machine side?",
+    "tensionProbe": "What if the gym's router isn't the problem?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Name specifics: network address settings, signal quality checks, internal cabling, security filters, network names — not just 'I'd check the WiFi' — must identify specific console-side checks like antenna cables, MAC addresses, or internal wiring",
+      "Describe the method: performs a power cycle, inspects internal hardware wiring, runs connection tests, verifies network login details",
+      "Name the trade-off: software/firmware configuration issues vs physical hardware failures",
+      "State the outcome: console connection restored, data syncing verified, successful test on the client app"
+    ]
+  },
+  {
+    "id": 4,
+    "skillName": "Client Relations",
+    "category": "Core Competency",
+    "rank": 4,
+    "must_have": true,
+    "proficiency": 2,
+    "description": "Act as a trusted advisor to gym owners and consumers while resolving high-pressure equipment failures. Source for: client-facing service roles, 'trusted advisor' language, customer satisfaction awards. Red flag: purely back-office or manufacturing floor experience with no customer interaction.",
+    "questionType": "Behavioral",
+    "screeningQuestion": "Think of a time you were on a job and realized the fix would take much longer than you'd told the customer. How did you handle that while their machine was still apart on the floor?",
+    "tensionProbe": "What happens if you just rush it?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Cite a real example: specific client interaction, equipment model involved, exact reason for the repair delay — not just 'I talked to them' — must describe the specific way they reset expectations while the machine was out of service",
+      "Show personal ownership: took responsibility for the update, provided a new timeline, managed client concerns, suggested temporary workarounds",
+      "Name the trade-off: being honest about the delay vs managing the client's immediate frustration",
+      "State the outcome: client trust preserved, repair completed, updated the communication process for next time"
+    ]
+  },
+  {
+    "id": 5,
+    "skillName": "Inventory Management",
+    "category": "Domain Knowledge",
+    "rank": 5,
+    "must_have": false,
+    "proficiency": 2,
+    "description": "Coordinate the replenishment and disposition of spare parts to minimize shrinkage and maintain vehicle stock. Source for: 'van stock' management, logistics coordination, warehouse-to-field tracking. Red flag: no mention of part tracking or inventory responsibility in previous roles.",
+    "questionType": "Situational",
+    "screeningQuestion": "You're halfway through your Tuesday route and realize you're out of a common sensor you thought you had in your van. Do you head back to the warehouse now or wait until the shift ends?",
+    "tensionProbe": "What's the cost of finishing the route?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Identify the problem: specific component codes, inventory tracking logs, repair success metrics, dispatch instructions — not just 'I'd go back later' — must weigh the impact on the day's fix rate against the time lost in transit",
+      "Outline the process: checks current stock levels, reviews upcoming appointments, updates the dispatcher, changes job status",
+      "Name the trade-off: impact on repair success rates vs the cost of fuel and travel time",
+      "State the outcome: decision made to stay or go, client notified, restocking plan set, daily schedule protected"
+    ]
+  },
+  {
+    "id": 6,
+    "skillName": "Preventative Maintenance",
+    "category": "Hard Skill",
+    "rank": 6,
+    "must_have": false,
+    "proficiency": 2,
+    "description": "Perform scheduled inspections and wear-and-tear assessments to extend equipment lifespan. Source for: scheduled service contracts, 'PM' program management, reliability engineering. Red flag: profile focus is exclusively on 'break-fix' with no mention of maintenance programs.",
+    "questionType": "ASK",
+    "screeningQuestion": "You're checking over some strength machines and notice the cables are starting to fray, but they aren't on today's work order. What's your move to prevent a breakdown without blowing your schedule?",
+    "tensionProbe": "What breaks if you just ignore it?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Name specifics: cable deterioration patterns, component alignment, mechanical wear points, tension adjustments — not just 'I'd fix it' — must explain the assessment of risk and the decision to either repair it now or document it for a return",
+      "Describe the method: evaluates the level of risk, records the wear found, informs the facility staff, updates the work order",
+      "Name the trade-off: time spent on proactive maintenance vs keeping the current service schedule",
+      "State the outcome: maintenance work recorded, future breakdown avoided, machine safety check passed"
+    ]
+  },
+  {
+    "id": 7,
+    "skillName": "ERP Systems",
+    "category": "Hard Skill",
+    "rank": 7,
+    "must_have": false,
+    "proficiency": 1,
+    "description": "Log service data and manage work orders within enterprise platforms like Oracle or SAP. Source for: Oracle, SAP, Salesforce Field Service, or equivalent mobile work order software. Red flag: no history of digital record-keeping or professional reporting.",
+    "questionType": "ASK",
+    "screeningQuestion": "If you've got six service calls to log at the end of a long day, how do you verify your work order data for accuracy before hitting submit?",
+    "tensionProbe": null,
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Name specifics: equipment serial numbers, parts inventory codes, time tracking, client sign-offs, digital service records — not just 'I type it in' — must describe a specific check for part numbers or serial codes before finalizing the record",
+      "Describe the method: cross-references paper notes, matches used parts to the order, reviews data before syncing, confirms job closure",
+      "Name the trade-off: staying focused on data accuracy while dealing with end-of-shift fatigue",
+      "State the outcome: records submitted error-free, inventory counts updated correctly, billing data verified"
+    ]
+  },
+  {
+    "id": 8,
+    "skillName": "Technical Documentation",
+    "category": "Core Competency",
+    "rank": 8,
+    "must_have": false,
+    "proficiency": 2,
+    "description": "Record equipment problems and complete professional expense reports promptly. Source for: service report samples, field documentation mentions, administrative compliance. Red flag: vague bullet points that lack metrics or specific reporting outcomes.",
+    "questionType": "Behavioral",
+    "screeningQuestion": "Looking back at a complicated repair, walk me through how you documented the parts and labor so the billing team and the next tech knew what happened.",
+    "tensionProbe": "What happens if the next tech is confused?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Cite a real example: detailed service report, sequential repair notes, specific component numbers, diagnostic results — not just 'I wrote it down' — must describe how they structured the report to be useful for someone else who wasn't there",
+      "Show personal ownership: drafted the technical narrative, explained the findings clearly, listed every step taken in order",
+      "Name the trade-off: completing the paperwork quickly vs providing the detail needed for billing and audits",
+      "State the outcome: records were clear, no questions from billing, improved the reporting process for the next job"
+    ]
+  },
+  {
+    "id": 9,
+    "skillName": "Cross-Functional Alignment",
+    "category": "Core Competency",
+    "rank": 9,
+    "must_have": false,
+    "proficiency": 2,
+    "description": "Partner with Sales teams and regional managers to align service delivery with business growth. Source for: cross-departmental collaboration, sales-support roles, regional team participation. Red flag: history of siloed work without mention of internal partners.",
+    "questionType": "Behavioral",
+    "screeningQuestion": "Tell me about a time you noticed equipment reaching the end of its life while you were there for a repair. How did you get that client on the sales team's radar?",
+    "tensionProbe": "What happens if you don't flag it?",
+    "hasNegativeAnchor": false,
+    "modelAnswer": [
+      "Cite a real example: potential sales lead, coordination with account managers, equipment age assessment, fleet health status — not just 'I told my boss' — must describe the specific handoff to a sales partner or regional manager",
+      "Show personal ownership: flagged a replacement opportunity, shared equipment status with internal teams, helped generate a sales lead",
+      "Name the trade-off: fixing the immediate mechanical issue vs looking for long-term business opportunities",
+      "State the outcome: sales referral submitted, customer relationship protected, communication with the sales team improved"
+    ]
+  }
+];
+
+const ROLE_TITLE = "Field Service Technician";
+const COMPANY_NAME = "Life Fitness";
+
+// ── DEMO LINK ──
+const DEMO_URL = "https://ratiomodel.com/book-demo";
+
+// ── LOGO (base64 embedded) ──
+const LOGO_SRC = "data:image/png;base64,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";
+
+// ============================================================
+// RENDER ENGINE — no need to edit below this line
+// ============================================================
+
+function parseDescription(desc) {
+  const mainMatch = desc.match(/^(.+?)(?:\s*Source for:|$)/);
+  const sourceMatch = desc.match(/Source for:\s*(.+?)(?:\.\s*Red flag:|$)/);
+  const gapMatch = desc.match(/Red flag:\s*(.+?)\.?$/);
+  return {
+    main: mainMatch ? mainMatch[1].trim().replace(/\.$/, '') : desc,
+    source: sourceMatch ? sourceMatch[1].trim().replace(/\.$/, '') : '',
+    gap: gapMatch ? gapMatch[1].trim().replace(/\.$/, '') : ''
+  };
+}
+
+function capitalize(str) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
+function proficiencyLabel(level) {
+  const labels = { 1: 'Beginner', 2: 'Intermediate', 3: 'Advanced' };
+  return labels[level] || 'Intermediate';
+}
+
+function renderDots(level, max = 3) {
+  let html = '';
+  for (let i = 1; i <= max; i++) {
+    html += `<span class="dot ${i <= level ? 'filled' : ''}" title="${proficiencyLabel(level)}"></span>`;
+  }
+  return html;
+}
+
+function splitRubric(text) {
+  const idx = text.indexOf(':');
+  if (idx > -1) {
+    return { label: text.substring(0, idx), detail: text.substring(idx + 1).trim() };
+  }
+  return { label: text, detail: '' };
+}
+
+// ============================================================
+// STATE MANAGEMENT
+// ============================================================
+
+const mustHaves = MODEL_DATA.filter(s => s.must_have);
+const preferred = MODEL_DATA.filter(s => !s.must_have);
+const totalSkills = MODEL_DATA.length;
+
+// State
+let activeTab = 'must-have'; // 'must-have' or 'preferred'
+let selectedSkillId = mustHaves.length > 0 ? mustHaves[0].id : MODEL_DATA[0].id;
+let probeVisible = {}; // { skillId: true/false }
+let checkedItems = {}; // { skillId: { itemIndex: true/false } }
+
+// Initialize checked items state for all skills
+MODEL_DATA.forEach(skill => {
+  checkedItems[skill.id] = {};
+});
+
+// Tooltip state
+let activeTooltip = null; // { id: string, element: HTMLElement }
+
+// Tooltip content definitions
+const TOOLTIP_CONTENT = {
+  'negative-anchor': {
+    title: 'Negative Anchor',
+    body: 'This question embeds an operational constraint that removes the standard textbook answer. The candidate has to improvise, which requires the kind of judgment that only comes from real experience. Applied to the most critical skill in the model.'
+  },
+  'question-type-ASK': {
+    title: 'Applied Skills & Knowledge',
+    body: 'Tests whether the candidate can actually do the work. Framed as a scenario with a real problem to solve. Used for hard skills and technical domain expertise.'
+  },
+  'question-type-Situational': {
+    title: 'Situational Question',
+    body: 'Presents a hypothetical scenario and asks how the candidate would respond. Used when you can\'t assume the candidate has direct experience with the exact situation.'
+  },
+  'question-type-Behavioral': {
+    title: 'Behavioral Question',
+    body: 'Asks candidates to describe real past experiences. The most validated question type for predicting future performance — past behavior is the strongest signal.'
+  },
+  'tension-probe': {
+    title: 'Tension Probe',
+    body: 'A short follow-up designed for candidates who give balanced, non-committal answers. AI coaching and rehearsed answers tend toward comprehensiveness. Real expertise commits to a trade-off and can name what gets sacrificed.'
+  },
+  'rate-R': {
+    title: 'R — Relevance',
+    body: 'Specific, grounded details that anchor the answer to the question. Vague answers like "usually I would..." often indicate a lack of real experience.'
+  },
+  'rate-A': {
+    title: 'A — Approach',
+    body: 'The correct method, with clear personal ownership. Separates people who can talk about a skill from those who actually use it.'
+  },
+  'rate-T': {
+    title: 'T — Tension',
+    body: 'Trade-offs, constraints, or difficulty acknowledged. The hardest dimension to fake — junior professionals solve the problem, senior professionals solve it while managing competing constraints.'
+  },
+  'rate-E': {
+    title: 'E — Evidence',
+    body: 'Outcome, validation, or learning demonstrated. Goes beyond "it worked" to how they know it worked.'
+  },
+  'rate-framework': {
+    title: 'The RATE Framework',
+    body: 'Ratio evaluates answers across four dimensions: Relevance (specific grounded details), Approach (correct method with personal ownership), Tension (trade-offs acknowledged), and Evidence (outcome validated). Each rubric item maps to one dimension.'
+  },
+  'skill-categories': {
+    title: 'Skill Categories',
+    body: 'Ratio includes three skill categories: Hard Skills, Core Competencies (Soft Skills), and Domain Knowledge (tailored to the job\'s specific industry).'
+  }
+};
+
+// ============================================================
+// TOOLTIP FUNCTIONS
+// ============================================================
+
+function showTooltip(tooltipId, triggerElement) {
+  // Close any existing tooltip
+  closeTooltip();
+
+  const content = TOOLTIP_CONTENT[tooltipId];
+  if (!content) return;
+
+  const tooltip = document.createElement('div');
+  tooltip.className = 'tooltip';
+  tooltip.id = 'active-tooltip';
+
+  // Determine if we should show above or below the trigger
+  const rect = triggerElement.getBoundingClientRect();
+  const spaceAbove = rect.top;
+  const spaceBelow = window.innerHeight - rect.bottom;
+  const minTopMargin = 80; // Minimum space from viewport top
+
+  // Prefer showing below unless there's significantly more space above
+  // and we have enough clearance from the top
+  let showAbove = spaceAbove > 250 && spaceAbove > spaceBelow + 100;
+
+  tooltip.innerHTML = `
+    <div class="tooltip-arrow ${showAbove ? 'top' : 'bottom'}"></div>
+    <div class="tooltip-title">${content.title}</div>
+    <div class="tooltip-body">${content.body}</div>
+    <button class="tooltip-dismiss" onclick="closeTooltip()">Got it</button>
+  `;
+
+  document.body.appendChild(tooltip);
+
+  // Position the tooltip
+  const tooltipRect = tooltip.getBoundingClientRect();
+  let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
+  let top;
+
+  if (showAbove) {
+    top = rect.top - tooltipRect.height - 14;
+    // If tooltip would be too close to top, show below instead
+    if (top < minTopMargin) {
+      showAbove = false;
+      top = rect.bottom + 14;
+      // Update arrow direction
+      tooltip.querySelector('.tooltip-arrow').className = 'tooltip-arrow bottom';
+    }
+  } else {
+    top = rect.bottom + 14;
+  }
+
+  // Keep within viewport horizontally
+  if (left < 16) left = 16;
+  if (left + tooltipRect.width > window.innerWidth - 16) {
+    left = window.innerWidth - tooltipRect.width - 16;
+  }
+
+  // Ensure minimum top margin
+  if (top < minTopMargin) top = minTopMargin;
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+
+  activeTooltip = { id: tooltipId, element: tooltip };
+
+  // Add click outside listener
+  setTimeout(() => {
+    document.addEventListener('click', handleClickOutsideTooltip);
+  }, 0);
+}
+
+function closeTooltip() {
+  if (activeTooltip) {
+    activeTooltip.element.remove();
+    activeTooltip = null;
+    document.removeEventListener('click', handleClickOutsideTooltip);
+  }
+}
+
+function handleClickOutsideTooltip(event) {
+  const tooltip = document.getElementById('active-tooltip');
+  if (tooltip && !tooltip.contains(event.target)) {
+    // Check if clicking on a tooltip trigger
+    const isTrigger = event.target.closest('.tooltip-trigger');
+    if (!isTrigger) {
+      closeTooltip();
+    }
+  }
+}
+
+function toggleTooltip(tooltipId, event) {
+  event.stopPropagation();
+  const triggerElement = event.currentTarget;
+
+  if (activeTooltip && activeTooltip.id === tooltipId) {
+    closeTooltip();
+  } else {
+    showTooltip(tooltipId, triggerElement);
+  }
+}
+
+// ============================================================
+// INTERACTION FUNCTIONS
+// ============================================================
+
+function setTab(tab) {
+  activeTab = tab;
+  const skills = tab === 'must-have' ? mustHaves : preferred;
+  // Select first skill in the new tab if current selection isn't in this tab
+  const currentSkill = MODEL_DATA.find(s => s.id === selectedSkillId);
+  if (currentSkill && currentSkill.must_have !== (tab === 'must-have')) {
+    selectedSkillId = skills.length > 0 ? skills[0].id : MODEL_DATA[0].id;
+  }
+  renderSkillBank();
+  renderSkillDetail();
+}
+
+function selectSkill(skillId) {
+  selectedSkillId = skillId;
+  renderSkillBank();
+  renderSkillDetail();
+}
+
+function toggleProbe(skillId) {
+  probeVisible[skillId] = !probeVisible[skillId];
+  renderSkillDetail();
+}
+
+function toggleCheck(skillId, itemIndex) {
+  if (!checkedItems[skillId]) checkedItems[skillId] = {};
+  checkedItems[skillId][itemIndex] = !checkedItems[skillId][itemIndex];
+  renderSkillDetail();
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+
+function renderSkillBank() {
+  const skills = activeTab === 'must-have' ? mustHaves : preferred;
+  const container = document.getElementById('skill-cards');
+
+  container.innerHTML = skills.map(skill => {
+    const isSelected = skill.id === selectedSkillId;
+    const rankStr = String(skill.rank).padStart(2, '0');
+
+    return `
+      <div class="skill-card ${isSelected ? 'selected' : ''}" onclick="selectSkill(${skill.id})">
+        <span class="skill-card-rank">${rankStr}</span>
+        <div class="skill-card-content">
+          <div class="skill-card-name">${skill.skillName}</div>
+          <div class="skill-card-level">
+            <div class="skill-card-dots">${renderDots(skill.proficiency)}</div>
+            <span class="skill-card-level-text">${proficiencyLabel(skill.proficiency)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Update tab styles
+  document.querySelectorAll('.skill-tab').forEach(tab => {
+    tab.classList.remove('active');
+    if (tab.dataset.tab === activeTab) {
+      tab.classList.add('active');
+    }
+  });
+}
+
+function renderSkillDetail() {
+  const skill = MODEL_DATA.find(s => s.id === selectedSkillId);
+  if (!skill) return;
+
+  const container = document.getElementById('skill-detail');
+  const parsed = parseDescription(skill.description);
+
+  // Question type badge with tooltip
+  const questionTypeMap = {
+    'ASK': { label: 'Applied Skills', tooltipId: 'question-type-ASK' },
+    'Situational': { label: 'Situational', tooltipId: 'question-type-Situational' },
+    'Behavioral': { label: 'Behavioral', tooltipId: 'question-type-Behavioral' }
+  };
+  const questionType = questionTypeMap[skill.questionType] || { label: skill.questionType, tooltipId: null };
+
+  // Anti-Gaming badge (only for skills with hasNegativeAnchor) - tooltip explains "Negative Anchor" concept
+  const antiGamingHtml = skill.hasNegativeAnchor ? `
+    <span class="badge badge-clickable tooltip-trigger" style="background: rgba(255, 140, 0, 0.1); color: #ff8c00;" onclick="toggleTooltip('negative-anchor', event)">Anti-Gaming</span>
+  ` : '';
+
+  // Insights HTML
+  let insightsHtml = '';
+  if (parsed.source) {
+    insightsHtml += `
+      <div class="detail-insight-row">
+        <div class="detail-insight-icon source">●</div>
+        <div><span class="detail-insight-label">Source for:</span> <span class="detail-insight-text">${capitalize(parsed.source)}</span></div>
+      </div>
+    `;
+  }
+  if (parsed.gap) {
+    insightsHtml += `
+      <div class="detail-insight-row">
+        <div class="detail-insight-icon flag">⚑</div>
+        <div><span class="detail-insight-label">Red flag:</span> <span class="detail-insight-text">${capitalize(parsed.gap)}</span></div>
+      </div>
+    `;
+  }
+
+  // Probe HTML (progressive disclosure with styled tooltip trigger)
+  const isProbeVisible = probeVisible[skill.id];
+  const probeText = skill.tensionProbe || skill.sacrificeProbe;
+  const probeHtml = probeText ? `
+    <div style="display: flex; align-items: center; gap: 10px; margin-top: 18px;">
+      <button class="probe-toggle ${isProbeVisible ? 'expanded' : ''}" onclick="toggleProbe(${skill.id})" style="margin-top: 0;">
+        ${isProbeVisible ? 'Hide follow-up' : 'Show follow-up'} <span class="probe-toggle-arrow">→</span>
+      </button>
+      <span class="tooltip-pill tooltip-trigger" onclick="toggleTooltip('tension-probe', event)">Why this probe?</span>
+    </div>
+    <div class="probe-content ${isProbeVisible ? 'visible' : ''}">
+      <div class="probe-label">Tension Probe</div>
+      <div class="probe-text">"${probeText}"</div>
+    </div>
+  ` : '';
+
+  // RATE rubric mapping - assign letters R, A, T, E to the 4 criteria
+  // Entire row is clickable to show tooltip for that RATE dimension
+  const rateLetters = ['R', 'A', 'T', 'E'];
+  const rubricHtml = skill.modelAnswer.map((item, idx) => {
+    const { label, detail } = splitRubric(item);
+    const rateLetter = rateLetters[idx] || '';
+    const rateTooltipId = rateLetter ? `rate-${rateLetter}` : null;
+
+    // Row click opens tooltip for the RATE dimension
+    const onClickHandler = rateTooltipId
+      ? `toggleTooltip('${rateTooltipId}', event)`
+      : '';
+
+    return `
+      <div class="rubric-item" ${onClickHandler ? `onclick="${onClickHandler}"` : ''}>
+        ${rateLetter ? `<span class="rate-badge">${rateLetter}</span>` : ''}
+        <div class="rubric-item-content">
+          <div class="rubric-item-label">${label}</div>
+          ${detail ? `<div class="rubric-item-detail">${detail}</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <!-- SKILL HEADER - Name with inline badges -->
+    <div class="detail-header">
+      <div class="detail-skill-name-row">
+        <h2 class="detail-skill-name">${skill.skillName}</h2>
+        <div class="detail-badges">
+          <span class="detail-category-badge badge-clickable tooltip-trigger" onclick="toggleTooltip('skill-categories', event)">${skill.category}</span>
+          ${questionType.tooltipId ? `
+            <span class="badge badge-clickable tooltip-trigger" style="background: var(--ghost); color: var(--slate);" onclick="toggleTooltip('${questionType.tooltipId}', event)">${questionType.label}</span>
+          ` : `
+            <span class="badge" style="background: var(--ghost); color: var(--slate);">${questionType.label}</span>
+          `}
+          ${antiGamingHtml}
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENING QUESTION (EMPHASIZED) -->
+    <div class="question-highlight">
+      <div class="question-header">
+        <span class="question-label">Screening Question</span>
+      </div>
+      <div class="question-text">${skill.screeningQuestion}</div>
+      ${probeHtml}
+    </div>
+
+    <!-- EVALUATION RUBRIC with RATE framework - grouped with question -->
+    <div class="rubric-section">
+      <div class="rubric-header">
+        <div class="rubric-header-row">
+          <div class="rubric-title">Did the candidate…</div>
+          <span class="tooltip-pill tooltip-trigger" onclick="toggleTooltip('rate-framework', event)">RATE?</span>
+        </div>
+      </div>
+      <div class="rubric-items">${rubricHtml}</div>
+    </div>
+
+    <!-- SKILL CONTEXT - Supporting reference -->
+    ${parsed.main ? `
+    <div class="detail-section">
+      <div class="detail-section-title">Skill Context</div>
+      <p class="detail-description">${parsed.main}</p>
+    </div>
+    ` : ''}
+
+    <!-- RECRUITER INSIGHTS - Supporting reference -->
+    ${insightsHtml ? `
+    <div class="detail-section">
+      <div class="detail-section-title">Recruiter Insights</div>
+      <div class="detail-insights">${insightsHtml}</div>
+    </div>
+    ` : ''}
+  `;
+}
+
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <!-- HEADER -->
+    <header class="header">
+      <div>
+        <img src="${LOGO_SRC}" class="logo-img" alt="Ratio">
+      </div>
+      <div class="header-right">
+        <div class="header-label">Skills-Based Hiring Model</div>
+        <div class="header-sublabel">Prepared for ${COMPANY_NAME}</div>
+        <div class="header-subtitle">Built by Ratio · Skills-based hiring and better assessment</div>
+      </div>
+    </header>
+
+    <!-- ROLE BANNER -->
+    <div class="role-banner">
+      <h1 class="role-title">${ROLE_TITLE}</h1>
+      <p class="role-subtitle">
+        This hiring model includes ${totalSkills} weighted skills
+        (${mustHaves.length} must-have, ${preferred.length} preferred), with screening questions and evaluation rubrics.
+      </p>
+    </div>
+
+    <!-- MASTER-DETAIL LAYOUT -->
+    <div class="layout-container">
+      <!-- LEFT: SKILL BANK -->
+      <div class="skill-bank">
+        <div class="skill-bank-header">
+          <span class="skill-bank-title">Skill Bank</span>
+          <span class="skill-bank-count">${totalSkills} Skills</span>
+        </div>
+
+        <!-- FILTER TABS -->
+        <div class="skill-tabs">
+          <button class="skill-tab ${activeTab === 'must-have' ? 'active' : ''}" data-tab="must-have" onclick="setTab('must-have')">
+            Must Have (${mustHaves.length})
+          </button>
+          <button class="skill-tab ${activeTab === 'preferred' ? 'active' : ''}" data-tab="preferred" onclick="setTab('preferred')">
+            Preferred (${preferred.length})
+          </button>
+        </div>
+
+        <!-- SKILL CARDS -->
+        <div class="skill-cards" id="skill-cards"></div>
+      </div>
+
+      <!-- RIGHT: SKILL DETAIL -->
+      <div class="skill-detail" id="skill-detail"></div>
+    </div>
+
+    <!-- INLINE CTA -->
+    <div class="cta-section">
+      <div class="cta-text">See this model live in Ratio</div>
+      <div class="cta-subtext">We'll build your first hiring model together — free, with full access.</div>
+      <a href="${DEMO_URL}" class="cta-button">Book a Demo</a>
+    </div>
+
+    <div class="legal-footer">
+      <a href="https://ratiomodel.com">ratiomodel.com</a>
+    </div>
+
+    <!-- STICKY CTA -->
+    <a href="${DEMO_URL}" class="sticky-cta">Book a Demo</a>
+  `;
+
+  // Render dynamic content
+  renderSkillBank();
+  renderSkillDetail();
+}
+
+// Initialize
+render();
+</script>
+</body>
+</html>
